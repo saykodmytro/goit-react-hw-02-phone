@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { ContactList } from './ContactList/ContactList';
 
 import { Container } from './Container/Container';
+import { Filter } from './Filter/Filter';
 import PhoneForm from './PhoneForm/PhoneForm';
 
 export class App extends Component {
@@ -16,6 +17,15 @@ export class App extends Component {
   };
 
   handleAddContact = newContact => {
+    const hasDuplicates = this.state.contacts.some(
+      contact => contact.name === newContact.name
+    );
+    if (hasDuplicates) {
+      return alert(
+        `Oops, product with title '${newContact.name}' already exist!`
+      );
+    }
+
     this.setState(prevState => {
       return {
         contacts: [...prevState.contacts, newContact],
@@ -39,7 +49,9 @@ export class App extends Component {
         <Container title="Phonebook">
           <PhoneForm handleAddContact={this.handleAddContact} />
         </Container>
-        <Container title="Search"></Container>
+        <Container title="Search">
+          <Filter />
+        </Container>
         <Container title="Contacts">
           <ContactList
             contacts={this.state.contacts}
