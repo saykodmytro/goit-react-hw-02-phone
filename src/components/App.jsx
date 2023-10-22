@@ -43,6 +43,24 @@ export class App extends Component {
     });
   };
 
+  handleFilterChange = event => {
+    this.setState({
+      filter: event.target.value,
+    });
+  };
+
+  handlerFilter = () => {
+    let searchContact = [];
+    if (this.state.filter) {
+      searchContact = this.state.contacts.filter(contact =>
+        contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
+      );
+    } else {
+      searchContact = this.state.contacts;
+    }
+    return searchContact;
+  };
+
   render() {
     return (
       <>
@@ -50,11 +68,15 @@ export class App extends Component {
           <PhoneForm handleAddContact={this.handleAddContact} />
         </Container>
         <Container title="Search">
-          <Filter />
+          <Filter
+            filter={this.state.filter}
+            handleFilterChange={this.handleFilterChange}
+          />
         </Container>
+
         <Container title="Contacts">
           <ContactList
-            contacts={this.state.contacts}
+            contacts={this.handlerFilter()}
             handleDelete={this.handleDelete}
           />
         </Container>
